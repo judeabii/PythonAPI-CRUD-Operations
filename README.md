@@ -1,2 +1,3 @@
 # PythonAPI-CRUD-Operations
-This project involves building a full-fledged Python API using FastAPI where I will perform CRUD operations on a SQLite database, schema validations, Authentication and much more.
+This project showcases a comprehensive Python API project built using FastAPI. The project focuses on performing CRUD operations on a SQLite database, implementing schema validations, authentication, and various other functionalities. With a clean and efficient framework like FastAPI, this project demonstrates the power and flexibility of building robust APIs in Python.
+
