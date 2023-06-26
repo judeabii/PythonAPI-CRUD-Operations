@@ -69,3 +69,19 @@ def write(post: Students):
 
     conn.close()
     return data
+
+
+@app.delete('/remove/{st_id}')
+def remove_student(st_id):
+    conn = sqlite3.connect("sample.db")
+    values = conn.execute("SELECT * FROM Student where ID = ?", [st_id]).fetchall()
+    if len(values) == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'The student with the id: {st_id} was not found')
+    else:
+        conn.execute("delete from Student where ID = ?", [st_id])
+        conn.commit()
+        conn.close()
+
+        return {'message': f'Student with ID: {st_id} was deleted successfully'}
+
