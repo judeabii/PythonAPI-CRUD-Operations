@@ -1,7 +1,7 @@
 import sqlite3
 from typing import Optional
 
-from fastapi import FastAPI, Body,Response,status,HTTPException
+from fastapi import FastAPI, Body, Response, status, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -15,13 +15,14 @@ class Students(BaseModel):
 
 
 @app.get("/student/{std_id}")
-def get_student(std_id,response : Response):
+def get_student(std_id, response: Response):
     conn = sqlite3.connect("sample.db")
     conn.row_factory = sqlite3.Row
     values = conn.execute("SELECT * FROM Student where id =?", [std_id]).fetchall()
     print(values)
     if len(values) == 0:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'The student with the id: {std_id} was not found')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'The student with the id: {std_id} was not found')
     return values
 
 
@@ -88,3 +89,20 @@ def remove_student(st_id):
 
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+
+@app.put('/update/{st_id}',status_code=status.HTTP_200_OK)
+def update_student(st_id, post: Students):
+    name = post.name
+    grade = post.grade
+    email = post.email
+    conn = sqlite3.connect("sample.db")
+
+    values = conn.execute("SELECT * FROM Student where ID = ?", [st_id]).fetchall()
+    if len(values) == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'The student with the id: {st_id} was not found')
+    conn.execute("UPDATE Student Set Name = ?,Grade =?,Email= ? where ID = ?",
+                 (name, grade, email, st_id))
+    conn.commit()
+    conn.close()
+    return {'message': 'successfully updated'}
