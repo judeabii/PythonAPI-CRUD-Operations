@@ -58,7 +58,7 @@ def write(payload: dict = Body(...)):   # Can use a list here too
 
 
 @app.post("/student", status_code=status.HTTP_201_CREATED)
-def write(post: Students):
+def read_student(post: Students):
     data = post.dict()
     name = data['name']
     grade = post.grade
