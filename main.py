@@ -71,7 +71,7 @@ def write(post: Students):
     return data
 
 
-@app.delete('/remove/{st_id}')
+@app.delete('/remove/{st_id}', status_code=status.HTTP_204_NO_CONTENT)
 def remove_student(st_id):
     conn = sqlite3.connect("sample.db")
     values = conn.execute("SELECT * FROM Student where ID = ?", [st_id]).fetchall()
@@ -83,5 +83,8 @@ def remove_student(st_id):
         conn.commit()
         conn.close()
 
-        return {'message': f'Student with ID: {st_id} was deleted successfully'}
+        # return {'message': f'Student with ID: {st_id} was deleted successfully'}
+        # Shouldn't return anything with 204 response
+
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
