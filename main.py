@@ -27,7 +27,7 @@ def get_student(std_id, response: Response):
 
 
 @app.get("/")
-def read_root():
+def read_all_students():
     conn = sqlite3.connect("sample.db")
     conn.row_factory = sqlite3.Row
     values = conn.execute("SELECT * FROM Student").fetchall()
@@ -58,7 +58,7 @@ def write(payload: dict = Body(...)):   # Can use a list here too
 
 
 @app.post("/student", status_code=status.HTTP_201_CREATED)
-def read_student(post: Students):
+def write_student(post: Students):
     data = post.dict()
     name = data['name']
     grade = post.grade
